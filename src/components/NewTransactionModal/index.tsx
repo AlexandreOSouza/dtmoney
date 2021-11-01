@@ -1,7 +1,8 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useContext, useState } from 'react'
 import Modal from 'react-modal'
 
 import { api } from '../../services/api'
+import { TransactionsContext } from '../../TransactionsContext'
 
 import CloseImg from'../../assets/close.svg'
 import IncomeImg from'../../assets/income.svg'
@@ -19,20 +20,25 @@ export function NewTransactionModal({isOpen, onCloseNewTransactionModal}: NewTra
     const [value, setValue] = useState(0)
     const [ type, setType ] = useState('depoist')
 
-    function handleCreateNewTransaction(event: FormEvent) {
+    const { createTransaction} = useContext(TransactionsContext);
+
+    function clearFields() {
+        setTitle('')
+        setCategory('')
+        setValue(0)
+        setType('depoist')
+    }
+
+    async function handleCreateNewTransaction(event: FormEvent) {
         event.preventDefault()
-
-        const data = {
-            title, 
-            value,
-            category,
+        await createTransaction({
+            title,
+            category,   
+            amount: value,
             type
-        }
-
-        api.post('transactions', data)
-
-
-
+        })
+        clearFields()
+        onCloseNewTransactionModal()
     }
 
     return (
@@ -93,4 +99,8 @@ export function NewTransactionModal({isOpen, onCloseNewTransactionModal}: NewTra
 
         </Modal>
     )
+}
+
+function TransactionContext(TransactionContext: any) {
+    throw new Error('Function not implemented.')
 }
