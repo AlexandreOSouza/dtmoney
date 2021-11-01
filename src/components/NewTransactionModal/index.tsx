@@ -98,7 +98,3 @@ export function NewTransactionModal({isOpen, onCloseNewTransactionModal}: NewTra
         </Modal>
     )
 }
-
-function TransactionContext(TransactionContext: any) {
-    throw new Error('Function not implemented.')
-}
